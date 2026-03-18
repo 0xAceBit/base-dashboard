@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { LayoutDashboard, ArrowLeftRight, History, Settings, Hexagon } from "lucide-react";
+import ConnectWallet from "@/components/ConnectWallet";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -37,15 +38,7 @@ const DashboardSidebar = () => {
       </nav>
 
       <div className="border-t border-sidebar-border pt-4">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-            <span className="text-xs font-semibold text-primary">0x</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-medium text-foreground">0x1a2b...9f3e</span>
-            <span className="text-xs text-muted-foreground">Base Mainnet</span>
-          </div>
-        </div>
+        <ConnectWallet />
       </div>
     </aside>
   );
