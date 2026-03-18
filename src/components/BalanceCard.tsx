@@ -1,6 +1,19 @@
 import { motion } from "framer-motion";
+import { useAccount, useBalance } from "wagmi";
+import { base } from "wagmi/chains";
+import { formatUnits } from "viem";
 
 const BalanceCard = () => {
+  const { address, isConnected } = useAccount();
+  const { data: ethBalance } = useBalance({
+    address,
+    chainId: base.id,
+  });
+
+  const formattedEth = ethBalance
+    ? parseFloat(formatUnits(ethBalance.value, ethBalance.decimals)).toFixed(4)
+    : "0.0000";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -13,22 +26,24 @@ const BalanceCard = () => {
       </span>
       <div className="mt-2 flex items-baseline gap-2">
         <h1 className="text-5xl font-bold tracking-tighter font-mono-nums text-foreground">
-          1.4280
+          {isConnected ? formattedEth : "—"}
         </h1>
         <span className="text-xl font-medium text-muted-foreground">ETH</span>
       </div>
-      <div className="mt-4 flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-primary" />
-          <span className="text-sm text-muted-foreground">Base</span>
-          <span className="text-sm font-mono-nums text-foreground">0.8420</span>
+      {!isConnected && (
+        <p className="mt-3 text-sm text-muted-foreground">
+          Connect your wallet to view balances.
+        </p>
+      )}
+      {isConnected && (
+        <div className="mt-4 flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-primary" />
+            <span className="text-sm text-muted-foreground">Base</span>
+            <span className="text-sm font-mono-nums text-foreground">{formattedEth}</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-muted-foreground" />
-          <span className="text-sm text-muted-foreground">USDC</span>
-          <span className="text-sm font-mono-nums text-foreground">$1,842.00</span>
-        </div>
-      </div>
+      )}
     </motion.div>
   );
 };
