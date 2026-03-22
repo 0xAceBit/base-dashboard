@@ -33,6 +33,7 @@ function truncateAddress(addr: string): string {
 
 export function useTransactionHistory(limit = 20) {
   const { address, isConnected } = useAccount();
+  const { price: ethPrice } = useEthPrice();
   const [transactions, setTransactions] = useState<RealTransaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
