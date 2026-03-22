@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { formatEther } from "viem";
+import { useEthPrice } from "@/hooks/useEthPrice";
 
 export interface RealTransaction {
   hash: string;
@@ -32,6 +33,7 @@ function truncateAddress(addr: string): string {
 
 export function useTransactionHistory(limit = 20) {
   const { address, isConnected } = useAccount();
+  const { price: ethPrice } = useEthPrice();
   const [transactions, setTransactions] = useState<RealTransaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +70,7 @@ export function useTransactionHistory(limit = 20) {
               to: tx.to ? truncateAddress(tx.to) : "Contract Creation",
               time: timeAgo(parseInt(tx.timeStamp)),
               status: tx.txreceipt_status === "1" ? "success" : "failed",
-              gas: `$${(parseFloat(gasCost) * 3800).toFixed(4)}`,
+              gas: `$${(parseFloat(gasCost) * (ethPrice || 0)).toFixed(4)}`,
               blockNumber: tx.blockNumber,
             };
           });
@@ -85,7 +87,7 @@ export function useTransactionHistory(limit = 20) {
     };
 
     fetchTxs();
-  }, [address, isConnected, limit]);
+  }, [address, isConnected, limit, ethPrice]);
 
   return { transactions, isLoading, error };
 }
