@@ -87,7 +87,7 @@ export function useTransactionHistory(limit = 20) {
     };
 
     fetchTxs();
-  }, [address, isConnected, limit]);
+  }, [address, isConnected, limit, ethPrice]);
 
   return { transactions, isLoading, error };
 }
