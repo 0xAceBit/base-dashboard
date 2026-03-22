@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDownUp, Loader2, AlertCircle } from "lucide-react";
-import { useAccount, useBalance, useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
-import { parseEther, parseUnits, encodeFunctionData } from "viem";
+import { useAccount, useBalance, useSendTransaction, useWaitForTransactionReceipt, useReadContract } from "wagmi";
+import { parseEther, parseUnits, encodeFunctionData, formatUnits } from "viem";
 import { base } from "wagmi/chains";
 import DashboardSidebar from "@/components/DashboardSidebar";
 
