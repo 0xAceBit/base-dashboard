@@ -24,7 +24,13 @@ const SwapPage = () => {
   const [txStatus, setTxStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
 
   const { data: ethBalance } = useBalance({ address, chainId: base.id });
-  const { data: wethBalance } = useBalance({ address, chainId: base.id, token: TOKENS[1].address! });
+  const { data: wethBalanceRaw } = useReadContract({
+    address: TOKENS[1].address!,
+    abi: [{ name: "balanceOf", type: "function", inputs: [{ name: "account", type: "address" }], outputs: [{ name: "", type: "uint256" }], stateMutability: "view" }] as const,
+    functionName: "balanceOf",
+    args: address ? [address] : undefined,
+    chainId: base.id,
+  });
 
   const { sendTransaction, data: txHash, isPending } = useSendTransaction();
   const { isSuccess, isError } = useWaitForTransactionReceipt({ hash: txHash });
