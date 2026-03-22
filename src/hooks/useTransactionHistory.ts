@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { formatEther } from "viem";
+import { useEthPrice } from "@/hooks/useEthPrice";
 
 export interface RealTransaction {
   hash: string;
