@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
-import { Zap, TrendingUp } from "lucide-react";
+import { Zap, TrendingUp, Loader2 } from "lucide-react";
+import { useEthPrice } from "@/hooks/useEthPrice";
 
 const NetworkStatus = () => {
+  const { price, isLoading } = useEthPrice();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -25,7 +28,15 @@ const NetworkStatus = () => {
             <TrendingUp className="w-4 h-4 text-primary" strokeWidth={1.5} />
             <span className="text-sm text-muted-foreground">ETH</span>
           </div>
-          <span className="text-sm font-mono-nums text-foreground">$3,842.10</span>
+          <span className="text-sm font-mono-nums text-foreground">
+            {isLoading ? (
+              <Loader2 className="w-3 h-3 animate-spin inline" />
+            ) : price ? (
+              `$${price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            ) : (
+              "—"
+            )}
+          </span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
