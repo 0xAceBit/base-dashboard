@@ -70,7 +70,7 @@ export function useTransactionHistory(limit = 20) {
               to: tx.to ? truncateAddress(tx.to) : "Contract Creation",
               time: timeAgo(parseInt(tx.timeStamp)),
               status: tx.txreceipt_status === "1" ? "success" : "failed",
-              gas: `$${(parseFloat(gasCost) * 3800).toFixed(4)}`,
+              gas: `$${(parseFloat(gasCost) * (ethPrice || 0)).toFixed(4)}`,
               blockNumber: tx.blockNumber,
             };
           });
