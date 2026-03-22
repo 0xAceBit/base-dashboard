@@ -75,10 +75,10 @@ const SwapPage = () => {
     }
   };
 
-  const fromBalance = fromToken.symbol === "ETH" ? ethBalance : wethBalance;
-  const formattedBalance = fromBalance
-    ? parseFloat(fromBalance.formatted).toFixed(6)
-    : "0.000000";
+  const fromBalance = fromToken.symbol === "ETH"
+    ? (ethBalance ? formatUnits(ethBalance.value, ethBalance.decimals) : "0")
+    : (wethBalanceRaw ? formatUnits(wethBalanceRaw as bigint, 18) : "0");
+  const formattedBalance = parseFloat(fromBalance).toFixed(6);
 
   return (
     <div className="min-h-svh bg-background flex">
