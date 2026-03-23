@@ -5,7 +5,7 @@ import SendModal from "@/components/SendModal";
 import ReceiveModal from "@/components/ReceiveModal";
 
 const BASE_BRIDGE_URL = "https://bridge.base.org";
-const BASE_MINT_URL = "https://mint.fun/?chain=base";
+const BASE_MINT_URL = "https://zora.co/";
 
 const ActionGrid = () => {
   const [sendOpen, setSendOpen] = useState(false);
