@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, AlertCircle } from "lucide-react";
-import { useAccount, useSendTransaction, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount, useChainId, useSendTransaction, useSwitchChain, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, parseUnits, isAddress, encodeFunctionData } from "viem";
 import { base } from "wagmi/chains";
-import { BASE_TOKENS, ERC20_ABI, type Token } from "@/lib/tokens";
+import { BASE_TOKENS, ERC20_ABI } from "@/lib/tokens";
 import {
   Select,
   SelectContent,
@@ -20,36 +20,58 @@ interface SendModalProps {
 
 const SendModal = ({ open, onClose }: SendModalProps) => {
   const { isConnected } = useAccount();
+  const chainId = useChainId();
+  const { switchChainAsync, isPending: isSwitching } = useSwitchChain();
+
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
   const [tokenIdx, setTokenIdx] = useState(0);
-  const { sendTransaction, data: txHash, isPending, error: sendError } = useSendTransaction();
+  const [localError, setLocalError] = useState<string | null>(null);
+
+  const { sendTransactionAsync, data: txHash, isPending, error: sendError, reset } = useSendTransaction();
   const { isSuccess, isError } = useWaitForTransactionReceipt({ hash: txHash });
 
   const selectedToken = BASE_TOKENS[tokenIdx];
 
-  const handleSend = () => {
-    if (!isAddress(to) || !amount || parseFloat(amount) <= 0) return;
+  const prettyError = useMemo(() => {
+    const message = localError ?? sendError?.message;
+    if (!message && !isError) return null;
+    if (message?.toLowerCase().includes("user rejected")) return "Transaction rejected.";
+    if (message?.toLowerCase().includes("insufficient funds")) return "Insufficient balance for amount + gas.";
+    if (message?.toLowerCase().includes("chain")) return "Please switch your wallet to Base mainnet.";
+    return message ?? "Transaction failed.";
+  }, [isError, localError, sendError?.message]);
 
-    if (!selectedToken.address) {
-      // Native ETH send
-      sendTransaction({
-        to: to as `0x${string}`,
-        value: parseEther(amount),
-        chainId: base.id,
-      });
-    } else {
-      // ERC-20 transfer
-      sendTransaction({
-        to: selectedToken.address,
-        value: 0n,
-        data: encodeFunctionData({
-          abi: ERC20_ABI,
-          functionName: "transfer",
-          args: [to as `0x${string}`, parseUnits(amount, selectedToken.decimals)],
-        }),
-        chainId: base.id,
-      });
+  const handleSend = async () => {
+    if (!isAddress(to) || !amount || Number(amount) <= 0) return;
+
+    setLocalError(null);
+
+    try {
+      if (chainId !== base.id) {
+        await switchChainAsync({ chainId: base.id });
+      }
+
+      if (!selectedToken.address) {
+        await sendTransactionAsync({
+          to: to as `0x${string}`,
+          value: parseEther(amount),
+          chainId: base.id,
+        });
+      } else {
+        await sendTransactionAsync({
+          to: selectedToken.address,
+          value: 0n,
+          data: encodeFunctionData({
+            abi: ERC20_ABI,
+            functionName: "transfer",
+            args: [to as `0x${string}`, parseUnits(amount, selectedToken.decimals)],
+          }),
+          chainId: base.id,
+        });
+      }
+    } catch (error) {
+      setLocalError(error instanceof Error ? error.message : "Transaction failed.");
     }
   };
 
@@ -57,8 +79,12 @@ const SendModal = ({ open, onClose }: SendModalProps) => {
     setTo("");
     setAmount("");
     setTokenIdx(0);
+    setLocalError(null);
+    reset();
     onClose();
   };
+
+  const isBusy = isPending || isSwitching;
 
   return (
     <AnimatePresence>
@@ -92,14 +118,15 @@ const SendModal = ({ open, onClose }: SendModalProps) => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {BASE_TOKENS.map((t, i) => (
-                      <SelectItem key={t.symbol} value={String(i)}>
-                        {t.symbol} — {t.name}
+                    {BASE_TOKENS.map((token, index) => (
+                      <SelectItem key={token.symbol} value={String(index)}>
+                        {token.symbol} — {token.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
+
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">Recipient Address</label>
                 <input
@@ -110,6 +137,7 @@ const SendModal = ({ open, onClose }: SendModalProps) => {
                   className="w-full bg-secondary border border-border rounded-xl px-4 py-3 text-sm font-mono-nums text-foreground outline-none focus:ring-1 focus:ring-primary placeholder:text-muted-foreground"
                 />
               </div>
+
               <div>
                 <label className="text-xs text-muted-foreground mb-1 block">Amount ({selectedToken.symbol})</label>
                 <input
@@ -130,22 +158,24 @@ const SendModal = ({ open, onClose }: SendModalProps) => {
                 </a>
               </div>
             )}
-            {(isError || sendError) && (
+
+            {prettyError && (
               <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-sm text-destructive flex items-center gap-2">
                 <AlertCircle className="w-4 h-4" />
-                {sendError?.message?.includes("User rejected") ? "Transaction rejected." : "Transaction failed."}
+                {prettyError}
               </div>
             )}
 
             <motion.button
               whileTap={{ scale: 0.98 }}
-              onClick={handleSend}
-              disabled={!isConnected || !isAddress(to) || !amount || parseFloat(amount) <= 0 || isPending}
+              onClick={() => void handleSend()}
+              disabled={!isConnected || !isAddress(to) || !amount || Number(amount) <= 0 || isBusy}
               className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer hover:shadow-primary-glow transition-shadow"
             >
-              {isPending ? (
+              {isBusy ? (
                 <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="w-4 h-4 animate-spin" /> Sending...
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  {isSwitching ? "Switching to Base..." : "Sending..."}
                 </span>
               ) : !isConnected ? "Connect Wallet" : `Send ${selectedToken.symbol}`}
             </motion.button>
