@@ -49,7 +49,7 @@ export function useTransactionHistory(limit = 20) {
       setError(null);
       try {
         const res = await fetch(
-          `${BASESCAN_API}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=${limit}&sort=desc`
+          `${BASESCAN_API}?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=${limit}&sort=desc&apikey=YourApiKeyToken`
         );
         const data = await res.json();
         
