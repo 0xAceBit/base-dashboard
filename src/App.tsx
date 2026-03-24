@@ -8,6 +8,7 @@ import { wagmiConfig } from "@/lib/wagmi";
 import Index from "./pages/Index.tsx";
 import SwapPage from "./pages/SwapPage.tsx";
 import HistoryPage from "./pages/HistoryPage.tsx";
+import SettingsPage from "./pages/SettingsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
