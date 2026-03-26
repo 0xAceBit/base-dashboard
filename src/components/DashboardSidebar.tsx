@@ -46,8 +46,9 @@ const DashboardSidebar = () => {
         })}
       </nav>
 
-      <div className="border-t border-sidebar-border pt-4">
+      <div className="border-t border-sidebar-border pt-4 flex items-center justify-between">
         <ConnectWallet />
+        <ThemeToggle />
       </div>
     </aside>
   );
