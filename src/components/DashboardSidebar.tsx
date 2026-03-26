@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { LayoutDashboard, ArrowLeftRight, History, Settings, Hexagon } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConnectWallet from "@/components/ConnectWallet";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/" },
@@ -45,8 +46,9 @@ const DashboardSidebar = () => {
         })}
       </nav>
 
-      <div className="border-t border-sidebar-border pt-4">
+      <div className="border-t border-sidebar-border pt-4 flex items-center justify-between">
         <ConnectWallet />
+        <ThemeToggle />
       </div>
     </aside>
   );
