@@ -1,0 +1,25 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "Baselyt",
+    "subtitle": "Your Base Dashboard and Swaps",
+    "description": "A real-time Base mainnet dashboard for tracking balances, swapping tokens, sending transactions, and viewing on-chain activity.",
+    "iconUrl": "https://baselyt.lovable.app/favicon.ico",
+    "splashImageUrl": "https://baselyt.lovable.app/og-image.png",
+    "splashBackgroundColor": "#000000",
+    "homeUrl": "https://baselyt.lovable.app",
+    "webhookUrl": "https://baselyt.lovable.app/api/webhook",
+    "primaryCategory": "utility",
+    "tags": ["defi", "base", "wallet", "swap", "dashboard"],
+    "heroImageUrl": "https://baselyt.lovable.app/og-image.png",
+    "tagline": "Your Base Dashboard and Swaps",
+    "ogTitle": "Baselyt — Base Mainnet Dashboard",
+    "ogDescription": "Track balances, swap tokens, and manage transactions on Base mainnet.",
+    "ogImageUrl": "https://baselyt.lovable.app/og-image.png"
+  }
+}
