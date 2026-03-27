@@ -11,7 +11,7 @@ const SettingsPage = () => {
   return (
     <div className="min-h-svh bg-background flex">
       <DashboardSidebar />
-      <main className="ml-[240px] flex-1 px-8 py-12">
+      <main className="mt-14 md:mt-0 md:ml-[240px] flex-1 px-4 sm:px-6 md:px-8 py-6 md:py-12">
         <div className="max-w-[600px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
