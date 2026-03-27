@@ -86,7 +86,7 @@ const HistoryPage = () => {
                                 {tx.status}
                               </span>
                             </div>
-                            <span className="text-xs text-muted-foreground font-mono-nums">
+                            <span className="text-xs text-muted-foreground font-mono-nums truncate max-w-[180px] sm:max-w-none">
                               {tx.type === "send" ? `To: ${tx.to}` : `From: ${tx.from}`}
                             </span>
                           </div>
