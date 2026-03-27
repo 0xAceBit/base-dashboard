@@ -62,7 +62,7 @@ const HistoryPage = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: i * 0.03 }}
-                        className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors cursor-pointer group"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-2 hover:bg-secondary/50 transition-colors cursor-pointer group"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
