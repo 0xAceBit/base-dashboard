@@ -17,7 +17,7 @@ const HistoryPage = () => {
   return (
     <div className="min-h-svh bg-background flex">
       <DashboardSidebar />
-      <main className="ml-[240px] flex-1 px-8 py-12">
+      <main className="mt-14 md:mt-0 md:ml-[240px] flex-1 px-4 sm:px-6 md:px-8 py-6 md:py-12">
         <div className="max-w-[800px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -62,7 +62,7 @@ const HistoryPage = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: i * 0.03 }}
-                        className="flex items-center justify-between p-4 hover:bg-secondary/50 transition-colors cursor-pointer group"
+                        className="flex flex-col sm:flex-row sm:items-center justify-between p-4 gap-2 hover:bg-secondary/50 transition-colors cursor-pointer group"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center">
@@ -86,7 +86,7 @@ const HistoryPage = () => {
                                 {tx.status}
                               </span>
                             </div>
-                            <span className="text-xs text-muted-foreground font-mono-nums">
+                            <span className="text-xs text-muted-foreground font-mono-nums truncate max-w-[180px] sm:max-w-none">
                               {tx.type === "send" ? `To: ${tx.to}` : `From: ${tx.from}`}
                             </span>
                           </div>

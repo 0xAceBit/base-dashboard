@@ -6,12 +6,12 @@ import NetworkStatus from "@/components/NetworkStatus";
 
 const Index = () => {
   return (
-    <div className="min-h-svh bg-background flex">
+    <div className="min-h-svh bg-background flex flex-col md:flex-row">
       <DashboardSidebar />
       
       {/* Main Content */}
-      <main className="ml-[240px] flex-1 flex">
-        <div className="flex-1 max-w-[800px] mx-auto px-8 py-12">
+      <main className="mt-14 md:mt-0 md:ml-[240px] flex-1 flex flex-col lg:flex-row">
+        <div className="flex-1 max-w-[800px] mx-auto px-4 sm:px-6 md:px-8 py-6 md:py-12">
           <div className="mb-2">
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">
               Your home on Base.
