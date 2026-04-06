@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { LayoutDashboard, ArrowLeftRight, History, Settings, Hexagon, Menu } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConnectWallet from "@/components/ConnectWallet";
-import ThemeToggle from "@/components/ThemeToggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
