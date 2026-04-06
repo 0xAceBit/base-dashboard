@@ -11,9 +11,11 @@ const DATA_SUFFIX = Attribution.toDataSuffix({
 export const wagmiConfig = createConfig({
   chains: [base, mainnet],
   connectors: [
+    // injected() auto-detects all installed browser wallets:
+    // Phantom, OKX, Keplr, Rabby, Trust, Brave, etc.
     injected(),
     metaMask(),
-    coinbaseWallet({ appName: "Base Layer" }),
+    coinbaseWallet({ appName: "Baselyt" }),
   ],
   transports: {
     [base.id]: http(),
