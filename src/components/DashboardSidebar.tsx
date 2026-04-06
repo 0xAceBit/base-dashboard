@@ -52,9 +52,8 @@ const SidebarContent = ({ onNavigate }: { onNavigate?: () => void }) => {
         })}
       </nav>
 
-      <div className="border-t border-sidebar-border pt-4 flex items-center justify-between">
+      <div className="border-t border-sidebar-border pt-4">
         <ConnectWallet />
-        <ThemeToggle />
       </div>
     </>
   );
