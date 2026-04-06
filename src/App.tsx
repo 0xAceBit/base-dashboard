@@ -6,6 +6,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { wagmiConfig } from "@/lib/wagmi";
+import ThemeToggle from "@/components/ThemeToggle";
 import Index from "./pages/Index.tsx";
 import SwapPage from "./pages/SwapPage.tsx";
 import HistoryPage from "./pages/HistoryPage.tsx";
@@ -22,6 +23,9 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <div className="fixed top-4 right-4 z-50">
+              <ThemeToggle />
+            </div>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/swap" element={<SwapPage />} />
