@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ThemeToggle from "@/components/ThemeToggle";
 import { LayoutDashboard, ArrowLeftRight, History, Settings, Hexagon, Menu } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import ConnectWallet from "@/components/ConnectWallet";
@@ -67,16 +68,19 @@ export const MobileHeader = () => {
         <Hexagon className="w-6 h-6 text-primary" strokeWidth={1.5} />
         <span className="text-base font-semibold text-foreground tracking-tight">Base Layer</span>
       </div>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <button className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors">
-            <Menu className="w-5 h-5 text-foreground" />
-          </button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-[260px] bg-sidebar p-6 flex flex-col">
-          <SidebarContent onNavigate={() => setOpen(false)} />
-        </SheetContent>
-      </Sheet>
+      <div className="flex items-center gap-1">
+        <ThemeToggle />
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <button className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors">
+              <Menu className="w-5 h-5 text-foreground" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[260px] bg-sidebar p-6 flex flex-col">
+            <SidebarContent onNavigate={() => setOpen(false)} />
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 };
